@@ -76,7 +76,7 @@ export const AddTodo = ({navigation}) => {
         <View style={styles.inputGroup}>
           <Text>Description:</Text>
           <TextInput
-            style={[!validTitle && styles.fieldInvalid]}
+            style={[!validDescription && styles.fieldInvalid]}
             multiline
             value={description}
             onChangeText={(text) => {
