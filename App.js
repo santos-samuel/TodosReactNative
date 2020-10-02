@@ -17,12 +17,14 @@ const AppWrapper = () => {
 };
 
 const App = () => {
-  const {isLoggedIn} = useContext(AuthContext);
+  const {loggedIn} = useContext(AuthContext);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {isLoggedIn() === false ? (
+        {loggedIn ? (
+          <Stack.Screen name="Home" component={Home} />
+        ) : (
           <Stack.Screen
             name="Login"
             component={Login}
@@ -30,9 +32,6 @@ const App = () => {
               title: 'Log In',
             }}
           />
-        ) : (
-          // User is signed in
-          <Stack.Screen name="Home" component={Home} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

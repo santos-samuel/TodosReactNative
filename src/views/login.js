@@ -7,14 +7,14 @@ export const Login = () => {
   const [password, onChangePassword] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
-  const {handleIsLoggedIn} = useContext(AuthContext);
+  const {setIsLoggedIn} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
       <View style={styles.inputWrapper}>
         <Text>Email:</Text>
         <TextInput
-          style={isValidEmail ? styles.input : styles.input_error}
+          style={[styles.input, (!isValidEmail && styles.inputError)]}
           placeholderTextColor="white"
           underlineColorAndroid="black"
           keyboardType="email-address"
@@ -28,7 +28,7 @@ export const Login = () => {
       <View style={styles.inputWrapper}>
         <Text>Password:</Text>
         <TextInput
-          style={isValidPassword ? styles.input : styles.input_error}
+          style={[styles.input, (!isValidPassword && styles.inputError)]}
           placeholderTextColor="white"
           underlineColorAndroid="black"
           secureTextEntry={true}
@@ -42,9 +42,7 @@ export const Login = () => {
 
       <Button
         title="Login"
-        onPress={() =>
-          validateInput(email, password) ? handleIsLoggedIn(true) : null
-        }
+        onPress={() => setIsLoggedIn(validateInput(email, password))}
       />
     </View>
   );
@@ -71,10 +69,9 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
   },
-  input_error: {
+  inputError: {
     borderColor: 'red',
     borderWidth: 1,
-    width: '100%',
   },
   inputWrapper: {
     width: '70%',
