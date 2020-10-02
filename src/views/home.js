@@ -1,18 +1,27 @@
-import {Text, View, StyleSheet, FlatList, ScrollView} from 'react-native';
-import React from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useEffect} from 'react';
 import {TodoItem} from '../components/TodoItem';
 import {incrementDateByDays} from '../utils/utils';
+import Icon from 'react-native-ionicons';
+import ScreenTitle from '../components/screenTitle';
 
-export const Home = ({navigation}) => {
+export const Home = ({navigation, route}) => {
   const DATA = [];
-  var today = new Date();
+  var today = new Date().getTime();
   for (var i = 0; i < 100; i++) {
     DATA.push({
       id: i.toString(),
       title: 'Title ' + i,
       description: 'Description ' + i,
       date: incrementDateByDays(today, i),
-      completed: true,
+      completed: false,
     });
   }
 
@@ -25,19 +34,30 @@ export const Home = ({navigation}) => {
     );
   };
 
+  useEffect(() => {
+    if (route.params?.new_todo) {
+      DATA.push(route.params?.new_todo);
+    }
+  }, [route.params?.new_todo]);
+
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.title_container}>
-          <Text style={styles.title}>Todos</Text>
+    <>
+      <ScrollView>
+        <View style={styles.container}>
+          <ScreenTitle>Todos</ScreenTitle>
+          <FlatList
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
         </View>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <TouchableOpacity
+        style={styles.floating_button}
+        onPress={() => navigation.navigate('AddTodo')}>
+        <Icon name="add" color={'white'} />
+      </TouchableOpacity>
+    </>
   );
 };
 
@@ -46,15 +66,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'center',
-  },
-  title_container: {
-    justifyContent: 'center',
-    height: 100,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    alignSelf: 'center',
   },
   todo_container: {
     height: 50,
@@ -66,5 +77,18 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: '#c4c4c4',
+  },
+  floating_button: {
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 65,
+    position: 'absolute',
+    bottom: 15,
+    right: 15,
+    height: 65,
+    backgroundColor: '#0088ff',
+    borderRadius: 100,
   },
 });

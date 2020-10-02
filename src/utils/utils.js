@@ -1,4 +1,6 @@
-export const dateToDDMMYYY = (date) => {
+export const dateToDDMMYYY = (dateInTime) => {
+  // date comes from getTime()
+  let date = new Date(dateInTime);
   var mm = date.getMonth() + 1; // getMonth() is zero-based
   var dd = date.getDate();
 
@@ -10,5 +12,6 @@ export const dateToDDMMYYY = (date) => {
 };
 
 export const incrementDateByDays = (date, daysToBeAdded) => {
-  return new Date(date.getTime() + 1000 * 60 * 60 * 24 * daysToBeAdded);
+  // date from getTime()
+  return new Date(date + 1000 * 60 * 60 * 24 * daysToBeAdded).getTime();
 };
