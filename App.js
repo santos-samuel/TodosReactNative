@@ -32,7 +32,7 @@ const App = () => {
           />
         ) : (
           // User is signed in
-          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
