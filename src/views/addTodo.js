@@ -5,6 +5,7 @@ import {
   TextInput,
   Platform,
   Button,
+  ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -44,7 +45,7 @@ export const AddTodo = ({navigation}) => {
     if (bool) {
       navigation.navigate('Home', {
         new_todo: {
-          id: 100, // todo
+          id: '100', // todo
           title: title,
           description: description,
           date: date.getTime(),
@@ -55,53 +56,58 @@ export const AddTodo = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <ScreenTitle>Add Todo</ScreenTitle>
+    <ScrollView>
+      <View style={styles.container}>
+        <ScreenTitle>Add Todo</ScreenTitle>
 
-      <View style={styles.input_group}>
-        <Text>Title:</Text>
-        <TextInput
-          style={validTitle ? styles.field : styles.field_invalid}
-          value={title}
-          onChangeText={(text) => {
-            setTitle(text);
-            setValidTitle(true);
-          }}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text>Title:</Text>
+          <TextInput
+            style={[!validTitle && styles.fieldInvalid]}
+            value={title}
+            onChangeText={(text) => {
+              setTitle(text);
+              setValidTitle(true);
+            }}
+            underlineColorAndroid="black"
+          />
+        </View>
 
-      <View style={styles.input_group}>
-        <Text>Description:</Text>
-        <TextInput
-          style={validDescription ? styles.field : styles.field_invalid}
-          multiline
-          value={description}
-          onChangeText={(text) => {
-            setDescription(text);
-            setValidDescription(true);
-          }}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text>Description:</Text>
+          <TextInput
+            style={[!validTitle && styles.fieldInvalid]}
+            multiline
+            value={description}
+            onChangeText={(text) => {
+              setDescription(text);
+              setValidDescription(true);
+            }}
+            underlineColorAndroid="black"
+          />
+        </View>
 
-      <View style={styles.input_group}>
-        <Text onPress={() => showDatepicker()}>Date:</Text>
-        <View style={styles.date_options}>
-          <Text onPress={showDatepicker}>{dateToDDMMYYY(date)}</Text>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={'date'}
-              is24Hour={true}
-              display="default"
-              onChange={onChangeDate}
-            />
-          )}
+        <View style={styles.inputGroup}>
+          <Text onPress={() => showDatepicker()}>Date:</Text>
+          <View style={styles.dateOptions}>
+            <Text onPress={showDatepicker}>{dateToDDMMYYY(date)}</Text>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={'date'}
+                is24Hour={true}
+                display="default"
+                onChange={onChangeDate}
+              />
+            )}
+          </View>
+        </View>
+        <View style={styles.inputGroup}>
+          <Button title="Add Todo" onPress={checkTodo} />
         </View>
       </View>
-
-      <Button title="Add Todo" onPress={checkTodo} />
-    </View>
+    </ScrollView>
   );
 };
 
@@ -110,15 +116,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  input_group: {
+  inputGroup: {
     width: '60%',
+    marginBottom: 20,
   },
-  date_options: {
+  dateOptions: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  field: {},
-  field_invalid: {
+  fieldInvalid: {
     borderColor: 'red',
     borderWidth: 1,
   },

@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   todo_container: {
-    height: 50,
+    minHeight: 50,
     width: '100%',
     justifyContent: 'space-around',
     margin: 3,
