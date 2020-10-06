@@ -6,6 +6,7 @@ import {
   Platform,
   Button,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -87,22 +88,22 @@ export const AddTodo = ({navigation}) => {
           />
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text onPress={() => showDatepicker()}>Date:</Text>
-          <View style={styles.dateOptions}>
-            <Text onPress={showDatepicker}>{moment(date).format('L')}</Text>
-            {show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={'date'}
-                is24Hour={true}
-                display="default"
-                onChange={onChangeDate}
-              />
-            )}
-          </View>
-        </View>
+        <TouchableOpacity
+          onPress={() => showDatepicker()}
+          style={styles.inputGroup}>
+          <Text>Date:</Text>
+          <Text>{moment(date).format('L')}</Text>
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={'date'}
+              is24Hour={true}
+              display="default"
+              onChange={onChangeDate}
+            />
+          )}
+        </TouchableOpacity>
         <View style={styles.inputGroup}>
           <Button title="Add Todo" onPress={checkTodo} />
         </View>
