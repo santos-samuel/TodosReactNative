@@ -1,13 +1,23 @@
-import {ADD_TODO, DELETE_TODO, UPDATE_TODO_COMPLETED} from '../actions';
+import {
+  ADD_TODO,
+  DELETE_TODO,
+  UPDATE_TODO_COMPLETED,
+} from '../actions/todosActions';
 
 const initialState = {
   todos: [],
+  currentId: 0,
 };
 
 export const todosReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TODO: {
-      return {...state, todos: [...state.todos, action.payload]};
+      action.payload.todo.id = state.currentId;
+      return {
+        ...state,
+        currentId: state.currentId + 1,
+        todos: [...state.todos, action.payload],
+      };
     }
     case UPDATE_TODO_COMPLETED: {
       return {

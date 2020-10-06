@@ -1,29 +1,25 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AddTodo, Home, Login} from './src/views';
-import AuthContext from './src/store/authContext';
-import useGlobalState from './src/store/store';
 import {NavigationContainer} from '@react-navigation/native';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import {rootReducer} from './rootReducer';
+import {Provider, useSelector} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {reducersStore, persistor} from './src/store/persistedStore';
 
 const Stack = createStackNavigator();
 
 const AppWrapper = () => {
-  const authStore = useGlobalState();
-  const reducersStore = createStore(rootReducer);
   return (
     <Provider store={reducersStore}>
-      <AuthContext.Provider value={authStore}>
+      <PersistGate loading={null} persistor={persistor}>
         <App />
-      </AuthContext.Provider>
+      </PersistGate>
     </Provider>
   );
 };
 
 const App = () => {
-  const {loggedIn} = useContext(AuthContext);
+  const loggedIn = useSelector((state) => state.authReducer.loggedIn);
 
   return (
     <NavigationContainer>

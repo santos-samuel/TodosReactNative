@@ -2,8 +2,8 @@ import {Text, StyleSheet, View, CheckBox, TouchableOpacity} from 'react-native';
 import React from 'react';
 import moment from 'moment';
 import {useDispatch} from 'react-redux';
-import {deleteTodo, updateTodoCompleted} from '../actions';
 import Icon from 'react-native-ionicons';
+import {deleteTodo, updateTodoCompleted} from '../actions/todosActions';
 
 export const TodoItem = ({item}) => {
   const dispatch = useDispatch();

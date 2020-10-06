@@ -1,14 +1,15 @@
 import {Text, View, Button, StyleSheet, TextInput} from 'react-native';
-import React, {useContext, useState} from 'react';
-import AuthContext from '../store/authContext';
+import React, {useState} from 'react';
 import {ScreenTitle} from '../components';
+import {useDispatch} from 'react-redux';
+import {logIn} from '../actions/authActions';
 
 export const Login = () => {
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
-  const {setIsLoggedIn} = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>
@@ -16,7 +17,7 @@ export const Login = () => {
       <View style={styles.inputWrapper}>
         <Text>Email:</Text>
         <TextInput
-          style={[styles.input, (!isValidEmail && styles.inputError)]}
+          style={[styles.input, !isValidEmail && styles.inputError]}
           placeholderTextColor="white"
           underlineColorAndroid="black"
           keyboardType="email-address"
@@ -30,7 +31,7 @@ export const Login = () => {
       <View style={styles.inputWrapper}>
         <Text>Password:</Text>
         <TextInput
-          style={[styles.input, (!isValidPassword && styles.inputError)]}
+          style={[styles.input, !isValidPassword && styles.inputError]}
           placeholderTextColor="white"
           underlineColorAndroid="black"
           secureTextEntry={true}
@@ -44,7 +45,11 @@ export const Login = () => {
 
       <Button
         title="Login"
-        onPress={() => setIsLoggedIn(validateInput(email, password))}
+        onPress={() => {
+          if (validateInput(email, password)) {
+            dispatch(logIn());
+          }
+        }}
       />
     </View>
   );
