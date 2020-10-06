@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Home, Login} from './src/views';
+import {AddTodo, Home, Login} from './src/views';
 import AuthContext from './src/store/authContext';
 import useGlobalState from './src/store/store';
 import {NavigationContainer} from '@react-navigation/native';
@@ -21,17 +21,14 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         {loggedIn ? (
-          <Stack.Screen name="Home" component={Home} />
+          <>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="AddTodo" component={AddTodo} />
+          </>
         ) : (
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              title: 'Log In',
-            }}
-          />
+          <Stack.Screen name="Login" component={Login} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

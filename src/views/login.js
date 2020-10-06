@@ -1,6 +1,7 @@
 import {Text, View, Button, StyleSheet, TextInput} from 'react-native';
 import React, {useContext, useState} from 'react';
 import AuthContext from '../store/authContext';
+import ScreenTitle from '../components/screenTitle';
 
 export const Login = () => {
   const [email, onChangeEmail] = useState('');
@@ -11,6 +12,7 @@ export const Login = () => {
 
   return (
     <View style={styles.container}>
+      <ScreenTitle>Log In</ScreenTitle>
       <View style={styles.inputWrapper}>
         <Text>Email:</Text>
         <TextInput
