@@ -13,7 +13,7 @@ import {useDispatch} from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import {ScreenTitle} from '../components';
-import {addTodo} from '../actions';
+import {addTodo} from '../actions/todosActions';
 
 export const AddTodo = ({navigation}) => {
   const [title, setTitle] = useState('');
