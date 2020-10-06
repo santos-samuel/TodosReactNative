@@ -9,17 +9,20 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import ScreenTitle from '../components/screenTitle';
 import moment from 'moment';
+import {ScreenTitle} from '../components';
+import {addTodo} from '../actions';
 
 export const AddTodo = ({navigation}) => {
   const [title, setTitle] = useState('');
-  const [invalidTitle, setInvalidTitle] = useState(true);
+  const [invalidTitle, setInvalidTitle] = useState(false);
   const [description, setDescription] = useState('');
-  const [invalidDescription, setInvalidDescription] = useState(true);
+  const [invalidDescription, setInvalidDescription] = useState(false);
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -44,15 +47,15 @@ export const AddTodo = ({navigation}) => {
     }
 
     if (bool) {
-      navigation.navigate('Home', {
-        new_todo: {
-          id: '100', // todo
+      dispatch(
+        addTodo({
           title,
           description,
           date: moment(date.getTime()).valueOf(),
           completed: false,
-        },
-      });
+        }),
+      );
+      navigation.navigate('Home');
     }
   };
 

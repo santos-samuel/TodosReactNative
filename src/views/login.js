@@ -1,7 +1,7 @@
 import {Text, View, Button, StyleSheet, TextInput} from 'react-native';
 import React, {useContext, useState} from 'react';
 import AuthContext from '../store/authContext';
-import ScreenTitle from '../components/screenTitle';
+import {ScreenTitle} from '../components';
 
 export const Login = () => {
   const [email, onChangeEmail] = useState('');

@@ -1,28 +1,11 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, FlatList, Text, TouchableOpacity} from 'react-native';
 import React, {useEffect} from 'react';
-import {TodoItem} from '../components/TodoItem';
+import {useSelector} from 'react-redux';
+import {TodoItem, ScreenTitle} from '../components';
 import Icon from 'react-native-ionicons';
-import ScreenTitle from '../components/screenTitle';
-import moment from 'moment';
 
 export const Home = ({navigation, route}) => {
-  const DATA = [];
-  for (var i = 0; i < 100; i++) {
-    DATA.push({
-      id: i.toString(),
-      title: `Title ${i}`,
-      description: `Description ${i}`,
-      date: moment().add(i, 'days').valueOf(),
-      completed: false,
-    });
-  }
+  const todos = useSelector((state) => state.todosReducer.todos);
 
   const renderItem = ({item}) => {
     return (
@@ -33,24 +16,25 @@ export const Home = ({navigation, route}) => {
     );
   };
 
-  useEffect(() => {
-    if (route.params?.new_todo) {
-      DATA.push(route.params?.new_todo);
-    }
-  }, [route.params?.new_todo]);
-
   return (
     <>
-      <ScrollView>
-        <View style={styles.container}>
-          <ScreenTitle>Todos</ScreenTitle>
+      <View style={styles.container}>
+        <ScreenTitle>Todos</ScreenTitle>
+        {todos.length === 0 ? (
+          <Text
+            style={{
+              alignSelf: 'center',
+            }}>
+            You have no todos!
+          </Text>
+        ) : (
           <FlatList
-            data={DATA}
+            data={todos}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item, index) => item.todo.id.toString()}
           />
-        </View>
-      </ScrollView>
+        )}
+      </View>
       <TouchableOpacity
         style={styles.floating_button}
         onPress={() => navigation.navigate('AddTodo')}>
@@ -64,7 +48,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   todo_container: {
     minHeight: 50,
