@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 
-const ScreenTitle = (props) => {
+export const ScreenTitle = (props) => {
   return (
     <View style={styles.title_container}>
       <Text style={{...styles.title, ...props.style}}>{props.children}</Text>
@@ -20,5 +20,3 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 });
-
-export default ScreenTitle;

@@ -4,15 +4,21 @@ import {AddTodo, Home, Login} from './src/views';
 import AuthContext from './src/store/authContext';
 import useGlobalState from './src/store/store';
 import {NavigationContainer} from '@react-navigation/native';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import {rootReducer} from './rootReducer';
 
 const Stack = createStackNavigator();
 
 const AppWrapper = () => {
-  const store = useGlobalState();
+  const authStore = useGlobalState();
+  const reducersStore = createStore(rootReducer);
   return (
-    <AuthContext.Provider value={store}>
-      <App />
-    </AuthContext.Provider>
+    <Provider store={reducersStore}>
+      <AuthContext.Provider value={authStore}>
+        <App />
+      </AuthContext.Provider>
+    </Provider>
   );
 };
 
