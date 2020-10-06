@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {dateToDDMMYYY} from '../utils/utils';
 import ScreenTitle from '../components/screenTitle';
+import moment from 'moment';
 
 export const AddTodo = ({navigation}) => {
   const [title, setTitle] = useState('');
-  const [validTitle, setValidTitle] = useState(true);
+  const [invalidTitle, setInvalidTitle] = useState(true);
   const [description, setDescription] = useState('');
-  const [validDescription, setValidDescription] = useState(true);
+  const [invalidDescription, setInvalidDescription] = useState(true);
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
 
@@ -33,12 +33,12 @@ export const AddTodo = ({navigation}) => {
   const checkTodo = () => {
     let bool = true;
     if (title.length === 0) {
-      setValidTitle(false);
+      setInvalidTitle(true);
       bool = false;
     }
 
     if (description.length === 0) {
-      setValidDescription(false);
+      setInvalidDescription(true);
       bool = false;
     }
 
@@ -46,9 +46,9 @@ export const AddTodo = ({navigation}) => {
       navigation.navigate('Home', {
         new_todo: {
           id: '100', // todo
-          title: title,
-          description: description,
-          date: date.getTime(),
+          title,
+          description,
+          date: moment(date.getTime()).valueOf(),
           completed: false,
         },
       });
@@ -63,11 +63,11 @@ export const AddTodo = ({navigation}) => {
         <View style={styles.inputGroup}>
           <Text>Title:</Text>
           <TextInput
-            style={[!validTitle && styles.fieldInvalid]}
+            style={[invalidTitle && styles.fieldInvalid]}
             value={title}
             onChangeText={(text) => {
               setTitle(text);
-              setValidTitle(true);
+              setInvalidTitle(false);
             }}
             underlineColorAndroid="black"
           />
@@ -76,12 +76,12 @@ export const AddTodo = ({navigation}) => {
         <View style={styles.inputGroup}>
           <Text>Description:</Text>
           <TextInput
-            style={[!validDescription && styles.fieldInvalid]}
+            style={[invalidDescription && styles.fieldInvalid]}
             multiline
             value={description}
             onChangeText={(text) => {
               setDescription(text);
-              setValidDescription(true);
+              setInvalidDescription(false);
             }}
             underlineColorAndroid="black"
           />
@@ -90,7 +90,7 @@ export const AddTodo = ({navigation}) => {
         <View style={styles.inputGroup}>
           <Text onPress={() => showDatepicker()}>Date:</Text>
           <View style={styles.dateOptions}>
-            <Text onPress={showDatepicker}>{dateToDDMMYYY(date)}</Text>
+            <Text onPress={showDatepicker}>{moment(date).format('L')}</Text>
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"

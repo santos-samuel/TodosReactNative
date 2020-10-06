@@ -8,19 +8,18 @@ import {
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {TodoItem} from '../components/TodoItem';
-import {incrementDateByDays} from '../utils/utils';
 import Icon from 'react-native-ionicons';
 import ScreenTitle from '../components/screenTitle';
+import moment from 'moment';
 
 export const Home = ({navigation, route}) => {
   const DATA = [];
-  var today = new Date().getTime();
   for (var i = 0; i < 100; i++) {
     DATA.push({
       id: i.toString(),
-      title: 'Title ' + i,
-      description: 'Description ' + i,
-      date: incrementDateByDays(today, i),
+      title: `Title ${i}`,
+      description: `Description ${i}`,
+      date: moment().add(i, 'days').valueOf(),
       completed: false,
     });
   }

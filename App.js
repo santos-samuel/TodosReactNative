@@ -21,29 +21,14 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         {loggedIn ? (
           <>
-            <Stack.Screen
-              name="Home"
-              component={Home}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="AddTodo"
-              component={AddTodo}
-              options={{headerShown: false}}
-            />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="AddTodo" component={AddTodo} />
           </>
         ) : (
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              title: 'Log In',
-              headerShown: false,
-            }}
-          />
+          <Stack.Screen name="Login" component={Login} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,6 +1,6 @@
-import {Text, StyleSheet, TouchableOpacity, View, CheckBox} from 'react-native';
+import {Text, StyleSheet, View, CheckBox} from 'react-native';
 import React from 'react';
-import {dateToDDMMYYY} from '../utils/utils';
+import moment from 'moment';
 
 export const TodoItem = ({item}) => {
   return (
@@ -10,7 +10,7 @@ export const TodoItem = ({item}) => {
         <View style={styles.text_container}>
           <Text
             style={
-              item.completed === true
+              item.completed
                 ? styles.todo_title_completed
                 : styles.todo_title
             }>
@@ -18,7 +18,7 @@ export const TodoItem = ({item}) => {
           </Text>
           <Text>{item.description}</Text>
         </View>
-        <Text style={styles.date}>{dateToDDMMYYY(item.date)}</Text>
+        <Text style={styles.date}>{moment(item.date).format('L')}</Text>
       </View>
     </View>
   );
