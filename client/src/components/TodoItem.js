@@ -4,32 +4,39 @@ import moment from 'moment';
 import {useDispatch} from 'react-redux';
 import Icon from 'react-native-ionicons';
 import {deleteTodo, updateTodoCompleted} from '../actions/todosActions';
+import {deleteTodoServer, updateTodoServer} from '../reducers/todo';
+import {setDisabled} from 'react-native/Libraries/LogBox/Data/LogBoxData';
 
 export const TodoItem = ({item}) => {
   const dispatch = useDispatch();
-  let todo = item.todo;
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.todo}>
         <CheckBox
           style={styles.completed}
-          value={todo.completed}
-          onValueChange={() => dispatch(updateTodoCompleted(todo.id))}
+          value={item.completed}
+          onValueChange={(v) => dispatch(updateTodoServer(item, {completed: v}))}
         />
         <View style={styles.text_container}>
           <Text
             style={
-              todo.completed ? styles.todo_title_completed : styles.todo_title
+              item.completed ? styles.todo_title_completed : styles.todo_title
             }>
-            {todo.title}
+            {item.title}
           </Text>
-          <Text>{todo.description}</Text>
+          <Text>{item.description}</Text>
         </View>
         <View style={styles.date_container}>
-          <Text>{moment(todo.date).format('L')}</Text>
+          <Text>{moment(item.date).format('L')}</Text>
         </View>
-        <TouchableOpacity style={styles.todo_options} onPress={() => dispatch(deleteTodo(todo.id))}>
+        <TouchableOpacity
+          style={styles.todo_options}
+          onPress={() => {
+            dispatch(deleteTodoServer(item.id)).catch((e) =>
+              console.log('Something went wrong'),
+            );
+          }}>
           <Icon name={'trash'} color={'black'} />
         </TouchableOpacity>
       </View>
