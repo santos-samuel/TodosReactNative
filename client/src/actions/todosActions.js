@@ -1,6 +1,7 @@
 export const ADD_TODO = 'ADD_TODO';
 export const DELETE_TODO = 'DELETE_TODO';
-export const UPDATE_TODO_COMPLETED = 'UPDATE_TODO_COMPLETED';
+export const UPDATE_TODO = 'UPDATE_TODO';
+export const SET_TODOS = 'SET_TODOS';
 
 export function addTodo(todo) {
   return {
@@ -9,10 +10,17 @@ export function addTodo(todo) {
   };
 }
 
-export function updateTodoCompleted(id) {
+export function setTodos(todos) {
   return {
-    type: UPDATE_TODO_COMPLETED,
-    payload: {id},
+    type: SET_TODOS,
+    payload: {todos},
+  };
+}
+
+export function updateTodo(todo) {
+  return {
+    type: UPDATE_TODO,
+    payload: {todo},
   };
 }
 

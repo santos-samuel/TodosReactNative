@@ -1,11 +1,29 @@
-import {View, StyleSheet, FlatList, Text, TouchableOpacity} from 'react-native';
-import React, {useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {TodoItem, ScreenTitle} from '../components';
 import Icon from 'react-native-ionicons';
+import {loadTodosServer} from '../reducers/todo';
 
 export const Home = ({navigation, route}) => {
-  const todos = useSelector((state) => state.todosReducer.todos);
+  const [isLoading, setLoading] = useState(true);
+  const dispatch = useRef(useDispatch());
+
+  let todos = useSelector((state) => state.todosReducer.todos);
+
+  useEffect(() => {
+    dispatch
+      .current(loadTodosServer())
+      .catch((e) => e)
+      .finally(() => setLoading(false));
+  }, []);
 
   const renderItem = ({item}) => {
     return (
@@ -20,19 +38,26 @@ export const Home = ({navigation, route}) => {
     <>
       <View style={styles.container}>
         <ScreenTitle>Todos</ScreenTitle>
-        {todos.length === 0 ? (
-          <Text
-            style={{
-              alignSelf: 'center',
-            }}>
-            You have no todos!
-          </Text>
-        ) : (
-          <FlatList
-            data={todos}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => item.todo.id.toString()}
-          />
+        {isLoading && (
+          <ActivityIndicator size="large" animating={true} color="#0000ff" />
+        )}
+        {!isLoading && (
+          <>
+            {todos.length === 0 ? (
+              <Text
+                style={{
+                  alignSelf: 'center',
+                }}>
+                You have no todos!
+              </Text>
+            ) : (
+              <FlatList
+                data={todos}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            )}
+          </>
         )}
       </View>
       <TouchableOpacity

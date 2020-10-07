@@ -13,7 +13,7 @@ import {useDispatch} from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import {ScreenTitle} from '../components';
-import {addTodo} from '../actions/todosActions';
+import {addTodoServer} from '../reducers/todo';
 
 export const AddTodo = ({navigation}) => {
   const [title, setTitle] = useState('');
@@ -48,14 +48,15 @@ export const AddTodo = ({navigation}) => {
 
     if (bool) {
       dispatch(
-        addTodo({
+        addTodoServer({
           title,
           description,
-          date: moment(date.getTime()).valueOf(),
+          date: moment(date).format('L'),
           completed: false,
         }),
-      );
-      navigation.navigate('Home');
+      )
+        .then((r) => navigation.navigate('Home'))
+        .catch((e) => console.log('Something went wrong'));
     }
   };
 

@@ -3,6 +3,7 @@ import {createStore, applyMiddleware} from 'redux';
 import {createLogger} from 'redux-logger';
 import {persistStore, persistReducer} from 'redux-persist';
 import {rootReducer} from '../reducers/rootReducer';
+import thunk from 'redux-thunk';
 
 const persistConfig = {
   // Root
@@ -18,7 +19,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const reducersStore = createStore(
   persistedReducer,
-  applyMiddleware(createLogger()),
+  applyMiddleware(createLogger(), thunk),
 );
 let persistor = persistStore(reducersStore);
 export {reducersStore, persistor};
