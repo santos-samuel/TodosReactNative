@@ -3,9 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import {useDispatch} from 'react-redux';
 import Icon from 'react-native-ionicons';
-import {deleteTodo, updateTodoCompleted} from '../actions/todosActions';
 import {deleteTodoServer, updateTodoServer} from '../reducers/todo';
-import {setDisabled} from 'react-native/Libraries/LogBox/Data/LogBoxData';
 
 export const TodoItem = ({item}) => {
   const dispatch = useDispatch();
@@ -16,7 +14,9 @@ export const TodoItem = ({item}) => {
         <CheckBox
           style={styles.completed}
           value={item.completed}
-          onValueChange={(v) => dispatch(updateTodoServer(item, {completed: v}))}
+          onValueChange={(v) =>
+            dispatch(updateTodoServer(item, {completed: v}))
+          }
         />
         <View style={styles.text_container}>
           <Text

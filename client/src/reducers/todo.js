@@ -5,7 +5,8 @@ import {
   DELETE_TODO,
   SET_TODOS,
   setTodos,
-  UPDATE_TODO, updateTodo,
+  UPDATE_TODO,
+  updateTodo,
 } from '../actions/todosActions';
 
 const initialState = {
@@ -57,27 +58,26 @@ export const addTodoServer = (todo) => async (dispatch, getState) => {
       },
       body: JSON.stringify(todo),
     });
-    const newTodoFromServer = await response.json();
-    console.log('Success Sync');
-    dispatch(addTodo(newTodoFromServer));
+
+    if (response.ok) {
+      const newTodoFromServer = await response.json();
+      dispatch(addTodo(newTodoFromServer));
+    }
   } catch (e) {
     console.log(e);
   }
 };
 
 export const loadTodosServer = () => {
-  // return (dispatch, getState) => {
-  //   fetch('http://192.168.1.68:3000/todos')
-  //     .then((response) => response.json())
-  //     .then((todosJson) => dispatch(setTodos(todosJson)))
-  //     .catch((error) => error);
-  // };
   return async (dispatch, getState) => {
     try {
       const response = await fetch('http://192.168.1.68:3000/todos');
-      const todos = await response.json();
-      dispatch(setTodos(todos));
-      return true;
+
+      if (response.ok) {
+        const todos = await response.json();
+        dispatch(setTodos(todos));
+        return true;
+      }
     } catch (e) {
       console.log(e);
       throw e;
@@ -90,8 +90,10 @@ export const deleteTodoServer = (id) => async (dispatch, getState) => {
     const response = await fetch(`http://192.168.1.68:3000/todos/${id}`, {
       method: 'DELETE',
     });
-    console.log('Success DELETE');
-    dispatch(deleteTodo(id));
+
+    if (response.ok) {
+      dispatch(deleteTodo(id));
+    }
   } catch (e) {
     console.log(e);
     throw e;
@@ -117,9 +119,10 @@ export const updateTodoServer = (todo, options) => async (
       body: JSON.stringify({todo: newTodo}),
     });
 
-    let updatedTodoFromServer = await response.json();
-    console.log('Success PUT');
-    dispatch(updateTodo(updatedTodoFromServer));
+    if (response.ok) {
+      let updatedTodoFromServer = await response.json();
+      dispatch(updateTodo(updatedTodoFromServer));
+    }
   } catch (e) {
     console.log(e);
     throw e;

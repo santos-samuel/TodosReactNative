@@ -22,5 +22,4 @@ const reducersStore = createStore(
   applyMiddleware(createLogger(), thunk),
 );
 let persistor = persistStore(reducersStore);
-persistor.purge()
 export {reducersStore, persistor};
